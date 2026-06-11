@@ -30,9 +30,11 @@ use BaksDev\Core\Entity\EntityState;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Dashboard\Entity\Dashboard;
+use BaksDev\Dashboard\Entity\Event\Invariable\DashboardInvariable;
 use BaksDev\Dashboard\Entity\Event\Modify\DashboardModify;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use BaksDev\Dashboard\Type\Id\DashboardUid;
+use BaksDev\Reference\Money\Type\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,9 +65,14 @@ class DashboardEvent extends EntityEvent
     #[ORM\Column(type: DashboardUid::TYPE, nullable: false)]
     private ?DashboardUid $main = null;
 
-    /** One To One */
-    //#[ORM\OneToOne(targetEntity: DashboardLogo::class, mappedBy: 'event', cascade: ['all'])]
-    //private ?DashboardOne $one = null;
+    /** DashboardInvariable */
+    #[ORM\OneToOne(targetEntity: DashboardInvariable::class, mappedBy: 'event', cascade: ['all'])]
+    private ?DashboardInvariable $invariable = null;
+
+    /** Стоимость */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Money::TYPE)]
+    private Money $total;
 
     /**
      * Модификатор
@@ -73,18 +80,10 @@ class DashboardEvent extends EntityEvent
     #[ORM\OneToOne(targetEntity: DashboardModify::class, mappedBy: 'event', cascade: ['all'])]
     private DashboardModify $modify;
 
-    /**
-     * Переводы
-     */
-    //#[ORM\OneToMany(targetEntity: DashboardTrans::class, mappedBy: 'event', cascade: ['all'])]
-    //private Collection $translate;
-
-
     public function __construct()
     {
         $this->id = new DashboardEventUid();
         $this->modify = new DashboardModify($this);
-
     }
 
     /**

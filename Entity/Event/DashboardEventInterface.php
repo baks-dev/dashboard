@@ -24,8 +24,11 @@
 namespace BaksDev\Dashboard\Entity\Event;
 
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
+use BaksDev\Reference\Money\Type\Money;
 
 interface DashboardEventInterface
 {
     public function getEvent(): ?DashboardEventUid;
+
+    public function getTotal(): Money;
 }
