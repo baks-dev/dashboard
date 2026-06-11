@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Dashboard\Entity;
 
+use BaksDev\Dashboard\Entity\Event\DashboardEvent;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use BaksDev\Dashboard\Type\Id\DashboardUid;
 use Doctrine\DBAL\Types\Types;

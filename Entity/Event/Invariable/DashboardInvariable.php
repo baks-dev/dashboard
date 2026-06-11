@@ -72,7 +72,7 @@ class DashboardInvariable extends EntityReadonly
 
     /** Период */
     #[Assert\NotBlank]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private DateTimeImmutable $period;
 
     /** Тип оплаты (маркетплейс) */

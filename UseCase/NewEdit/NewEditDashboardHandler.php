@@ -30,7 +30,9 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Dashboard\Entity\Dashboard;
 use BaksDev\Dashboard\Entity\Event\DashboardEvent;
 use BaksDev\Dashboard\Messenger\Default\DashboardMessage;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+#[Autoconfigure(public: true, shared: false)]
 final class NewEditDashboardHandler extends AbstractHandler
 {
     /** @see Dashboard */
