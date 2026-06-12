@@ -41,11 +41,11 @@ final class NewEditDashboardInvariableDTO implements DashboardInvariableInterfac
 
     /** Период */
     #[Assert\NotBlank]
-    private DateTimeImmutable $frm;
+    private DateTimeImmutable $start;
 
     /** Период */
     #[Assert\NotBlank]
-    private DateTimeImmutable $to;
+    private DateTimeImmutable $finish;
 
     public function getName(): string
     {
@@ -58,31 +58,20 @@ final class NewEditDashboardInvariableDTO implements DashboardInvariableInterfac
         return $this;
     }
 
-    public function getType(): string
+    public function getStart(): DateTimeImmutable
     {
-        return $this->type;
+        return $this->start;
     }
 
-    public function setType(string $type): self
+    public function getFinish(): DateTimeImmutable
     {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getFrm(): DateTimeImmutable
-    {
-        return $this->frm;
-    }
-
-    public function getTo(): DateTimeImmutable
-    {
-        return $this->to;
+        return $this->finish;
     }
 
     public function setPeriod(DateTimeImmutable $from, DateTimeImmutable $to): self
     {
-        $this->frm = $from->setTime(0, 0, 0);
-        $this->to = $to->setTime(0, 0, 0);
+        $this->start = $from->setTime(0, 0, 0);
+        $this->finish = $to->setTime(0, 0, 0);
         return $this;
     }
 }

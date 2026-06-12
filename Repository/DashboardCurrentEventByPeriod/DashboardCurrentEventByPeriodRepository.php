@@ -43,8 +43,8 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
 {
     private PaymentUid $payment;
     private UserUid $user;
-    private DateTimeImmutable $from;
-    private DateTimeImmutable $to;
+    private DateTimeImmutable $start;
+    private DateTimeImmutable $finish;
     private string $type;
 
     public function __construct(private readonly ORMQueryBuilder $ORMQueryBuilder) {}
@@ -65,8 +65,8 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
 
     public function period(DateTimeImmutable $from, DateTimeImmutable $to): self
     {
-        $this->from = $from->setTime(0, 0, 0);
-        $this->to = $to->setTime(0, 0, 0);
+        $this->start = $from->setTime(0, 0, 0);
+        $this->finish = $to->setTime(0, 0, 0);
 
         return $this;
     }
@@ -78,14 +78,13 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
     }
 
 
-    public function find(): DashboardEvent|bool
+    public function find(): DashboardEvent|null
     {
-        $dbal = $this->ORMQueryBuilder->createQueryBuilder(self::class);
+        $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
-        $dbal->select('id');
-        $dbal->from(Dashboard::class, 'dashboard');
+        $orm->from(Dashboard::class, 'dashboard');
 
-        $dbal->join(
+        $orm->join(
             DashboardPayment::class,
             'dashboard_payment',
             'WITH',
@@ -99,7 +98,7 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
                 type: PaymentUid::TYPE,
             );
 
-        $dbal->join(
+        $orm->join(
             DashboardUser::class,
             'dashboard_user',
             'WITH',
@@ -113,13 +112,13 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
                 type: UserUid::TYPE,
             );
 
-        $dbal->join(
+        $orm->join(
             DashboardType::class,
             'dashboard_type',
             'WITH',
             '
-                dashboard_user.main = dashboard.id 
-                AND dashboard_payment.value = :type
+                dashboard_type.main = dashboard.id 
+                AND dashboard_type.value = :type
              ')
             ->setParameter(
                 key: 'type',
@@ -127,34 +126,36 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
                 type: Types::STRING,
             );
 
-        $dbal->join(
+        $orm->join(
             DashboardInvariable::class,
             'dashboard_invariable',
             'WITH',
             '
                 dashboard_invariable.main = dashboard.id
-                AND dashboard_invariable.from = :frm
-                AND dashboard_invariable.to = :to
+                AND dashboard_invariable.start = :start
+                AND dashboard_invariable.finish = :finish
             ')
             ->setParameter(
-                key: 'frm',
-                value: $this->from,
+                key: 'start',
+                value: $this->start,
                 type: Types::DATETIME_IMMUTABLE,
             )
             ->setParameter(
-                key: 'to',
-                value: $this->to,
+                key: 'finish',
+                value: $this->finish,
                 type: Types::DATETIME_IMMUTABLE,
             );
 
 
-        $dbal->join(
-            DashboardEvent::class,
-            'dashboard_event',
-            'WITH',
-            'dashboard_event.id = dashboard.event',
-        );
+        $orm
+            ->select('dashboard_event')
+            ->join(
+                DashboardEvent::class,
+                'dashboard_event',
+                'WITH',
+                'dashboard_event.id = dashboard.event',
+            );
 
-        return $dbal->getOneOrNullResult();
+        return $orm->getOneOrNullResult();
     }
 }

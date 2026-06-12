@@ -73,8 +73,8 @@ class EditDashboardHandlerTest extends KernelTestCase
         self::assertEquals('Название', $DashboardInvariableDTO->getName());
 
         $tetsPeriod = new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day'));
-        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getFrm()->format('d.m.Y'));
-        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getTo()->format('d.m.Y'));
+        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getStart()->format('d.m.Y'));
+        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getFinish()->format('d.m.Y'));
 
 
         $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();

@@ -71,11 +71,11 @@ class DashboardInvariable extends EntityReadonly
 
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private DateTimeImmutable $frm;
+    private DateTimeImmutable $start;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private DateTimeImmutable $to;
+    private DateTimeImmutable $finish;
 
 
     public function __construct(DashboardEvent $event)
@@ -112,5 +112,4 @@ class DashboardInvariable extends EntityReadonly
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
-
 }

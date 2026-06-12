@@ -38,5 +38,5 @@ interface DashboardCurrentEventByPeriodInterface
 
     public function type(string $type): self;
 
-    public function find(): DashboardEvent|bool;
+    public function find(): DashboardEvent|null;
 }

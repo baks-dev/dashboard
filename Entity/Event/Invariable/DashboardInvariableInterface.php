@@ -24,11 +24,14 @@
 namespace BaksDev\Dashboard\Entity\Event\Invariable;
 
 use BaksDev\Payment\Type\Id\PaymentUid;
+use DateTimeImmutable;
 
 interface DashboardInvariableInterface
 {
     public function getName(): string;
 
-    public function getType(): string;
+    public function getStart(): DateTimeImmutable;
+
+    public function getFinish(): DateTimeImmutable;
 
 }
