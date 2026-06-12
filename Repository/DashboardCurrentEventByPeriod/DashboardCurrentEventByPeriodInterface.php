@@ -21,14 +21,22 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+namespace BaksDev\Dashboard\Repository\DashboardCurrentEventByPeriod;
 
+use BaksDev\Dashboard\Entity\Event\DashboardEvent;
 use BaksDev\Payment\Type\Id\PaymentUid;
+use BaksDev\Users\User\Type\Id\UserUid;
+use DateTimeImmutable;
 
-interface DashboardInvariableInterface
+interface DashboardCurrentEventByPeriodInterface
 {
-    public function getName(): string;
+    public function payment(PaymentUid $payment): self;
 
-    public function getType(): string;
+    public function user(UserUid $user): self;
 
+    public function period(DateTimeImmutable $from, DateTimeImmutable $to): self;
+
+    public function type(string $type): self;
+
+    public function find(): DashboardEvent|bool;
 }

@@ -21,14 +21,28 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+declare(strict_types=1);
 
-use BaksDev\Payment\Type\Id\PaymentUid;
+namespace BaksDev\Dashboard\UseCase\NewEdit\Type;
 
-interface DashboardInvariableInterface
+use BaksDev\Dashboard\Entity\Event\Type\DashboardTypeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/** @see DashboardType */
+final class NewEditDashboardTypeDTO implements DashboardTypeInterface
 {
-    public function getName(): string;
+    /** Значение свойства */
+    #[Assert\NotBlank]
+    private ?string $value = null;
 
-    public function getType(): string;
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
 
+    public function setValue(?string $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
 }

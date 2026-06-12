@@ -21,14 +21,14 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+namespace BaksDev\Dashboard\Entity\Event\Type;
 
-use BaksDev\Payment\Type\Id\PaymentUid;
-
-interface DashboardInvariableInterface
+interface DashboardTypeInterface
 {
-    public function getName(): string;
-
-    public function getType(): string;
-
+    /**
+     * Значение свойства
+     *
+     * @see DashboardType
+     */
+    public function getValue(): ?string;
 }

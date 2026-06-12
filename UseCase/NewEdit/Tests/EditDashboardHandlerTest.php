@@ -71,18 +71,20 @@ class EditDashboardHandlerTest extends KernelTestCase
 
         $DashboardInvariableDTO = $NewEditDashboardDTO->getInvariable();
         self::assertEquals('Название', $DashboardInvariableDTO->getName());
-        self::assertEquals('day', $DashboardInvariableDTO->getType());
 
         $tetsPeriod = new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day'));
-        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getPeriod()->format('d.m.Y'));
+        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getFrm()->format('d.m.Y'));
+        self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getTo()->format('d.m.Y'));
 
 
         $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();
         self::assertTrue($DashboardPaymentDTO->getValue()->equals(PaymentUid::TEST));
 
-
         $DashboardUserDTO = $NewEditDashboardDTO->getUser();
         self::assertTrue($DashboardUserDTO->getValue()->equals(UserUid::TEST));
+
+        $NewEditDashboardTypeDTO = $NewEditDashboardDTO->getType();
+        self::assertEquals('day', $NewEditDashboardTypeDTO->getValue());
 
         /** Обновляем */
 
@@ -91,11 +93,13 @@ class EditDashboardHandlerTest extends KernelTestCase
         $DashboardInvariableDTO = $NewEditDashboardDTO->getInvariable();
         $DashboardInvariableDTO
             ->setName('Новое название')
-            ->setType('month') // day | month | year
-            ->setPeriod(new DateTimeImmutable('now'));
+            ->setPeriod(
+                new DateTimeImmutable('now'),
+                new DateTimeImmutable('now'),
+            );
 
+        $NewEditDashboardTypeDTO->setValue('month');
         $DashboardPaymentDTO->setValue(clone new PaymentUid(PaymentUid::TEST));
-
         $DashboardUserDTO->setValue(clone new UserUid(UserUid::TEST));
 
 

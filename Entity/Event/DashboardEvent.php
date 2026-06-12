@@ -30,6 +30,7 @@ use BaksDev\Dashboard\Entity\Dashboard;
 use BaksDev\Dashboard\Entity\Event\Invariable\DashboardInvariable;
 use BaksDev\Dashboard\Entity\Event\Modify\DashboardModify;
 use BaksDev\Dashboard\Entity\Event\Payment\DashboardPayment;
+use BaksDev\Dashboard\Entity\Event\Type\DashboardType;
 use BaksDev\Dashboard\Entity\Event\User\DashboardUser;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use BaksDev\Dashboard\Type\Id\DashboardUid;
@@ -71,6 +72,10 @@ class DashboardEvent extends EntityEvent
     /** DashboardUser */
     #[ORM\OneToOne(targetEntity: DashboardUser::class, mappedBy: 'event', cascade: ['all'])]
     private ?DashboardUser $user = null;
+
+    /** DashboardType */
+    #[ORM\OneToOne(targetEntity: DashboardType::class, mappedBy: 'event', cascade: ['all'])]
+    private ?DashboardType $type = null;
 
     /** Стоимость */
     #[Assert\NotBlank]

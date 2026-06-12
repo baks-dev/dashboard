@@ -29,6 +29,7 @@ use BaksDev\Dashboard\Entity\Event\DashboardEventInterface;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use BaksDev\Dashboard\UseCase\NewEdit\Invariable\NewEditDashboardInvariableDTO;
 use BaksDev\Dashboard\UseCase\NewEdit\Payment\NewEditDashboardPaymentDTO;
+use BaksDev\Dashboard\UseCase\NewEdit\Type\NewEditDashboardTypeDTO;
 use BaksDev\Dashboard\UseCase\NewEdit\User\NewEditDashboardUserDTO;
 use BaksDev\Reference\Money\Type\Money;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,10 +51,12 @@ final class NewEditDashboardDTO implements DashboardEventInterface
     /** DashboardPayment */
     private ?NewEditDashboardPaymentDTO $payment;
 
-
     /** DashboardUser */
     #[Assert\Valid]
     private NewEditDashboardUserDTO $user;
+
+    /** DashboardType */
+    private NewEditDashboardTypeDTO $type;
 
     /** Стоимость */
     #[Assert\NotBlank]
@@ -64,6 +67,7 @@ final class NewEditDashboardDTO implements DashboardEventInterface
         $this->invariable = new NewEditDashboardInvariableDTO();
         $this->payment = new NewEditDashboardPaymentDTO();
         $this->user = new NewEditDashboardUserDTO();
+        $this->type = new NewEditDashboardTypeDTO();
     }
 
     /**
@@ -98,5 +102,10 @@ final class NewEditDashboardDTO implements DashboardEventInterface
     public function getUser(): NewEditDashboardUserDTO
     {
         return $this->user;
+    }
+
+    public function getType(): NewEditDashboardTypeDTO
+    {
+        return $this->type;
     }
 }

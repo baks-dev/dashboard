@@ -83,8 +83,10 @@ class NewDashboardHandlerTest extends KernelTestCase
         $DashboardInvariableDTO = $NewEditDashboardDTO->getInvariable();
         $DashboardInvariableDTO
             ->setName('Название')
-            ->setType('day') // day | month | year
-            ->setPeriod(new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')));
+            ->setPeriod(
+                new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')),
+                new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')),
+            );
 
         $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();
         $DashboardPaymentDTO->setValue(new PaymentUid(PaymentUid::TEST));
@@ -92,13 +94,14 @@ class NewDashboardHandlerTest extends KernelTestCase
         $DashboardUserDTO = $NewEditDashboardDTO->getUser();
         $DashboardUserDTO->setValue(new UserUid(UserUid::TEST));
 
+        $NewEditDashboardTypeDTO = $NewEditDashboardDTO->getType();
+        $NewEditDashboardTypeDTO->setValue('day');
 
         /** @var NewEditDashboardHandler $NewEditDashboardHandler */
         $NewEditDashboardHandler = self::getContainer()->get(NewEditDashboardHandler::class);
         $handle = $NewEditDashboardHandler->handle($NewEditDashboardDTO);
 
         self::assertTrue(($handle instanceof Dashboard), $handle.': Ошибка Dashboard');
-
     }
 
 
