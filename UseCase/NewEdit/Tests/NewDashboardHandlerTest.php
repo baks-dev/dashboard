@@ -33,6 +33,7 @@ use BaksDev\Dashboard\UseCase\NewEdit\NewEditDashboardDTO;
 use BaksDev\Dashboard\UseCase\NewEdit\NewEditDashboardHandler;
 use BaksDev\Payment\Type\Id\PaymentUid;
 use BaksDev\Reference\Money\Type\Money;
+use BaksDev\Users\User\Type\Id\UserUid;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,8 +84,13 @@ class NewDashboardHandlerTest extends KernelTestCase
         $DashboardInvariableDTO
             ->setName('Название')
             ->setType('day') // day | month | year
-            ->setPeriod(new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')))
-            ->setPayment(new PaymentUid(PaymentUid::TEST));
+            ->setPeriod(new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')));
+
+        $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();
+        $DashboardPaymentDTO->setValue(new PaymentUid(PaymentUid::TEST));
+
+        $DashboardUserDTO = $NewEditDashboardDTO->getUser();
+        $DashboardUserDTO->setValue(new UserUid(UserUid::TEST));
 
 
         /** @var NewEditDashboardHandler $NewEditDashboardHandler */

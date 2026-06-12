@@ -32,7 +32,7 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see DashboardInvariable */
-final class DashboardInvariableDTO implements DashboardInvariableInterface
+final class NewEditDashboardInvariableDTO implements DashboardInvariableInterface
 {
 
     /** Название */
@@ -46,10 +46,6 @@ final class DashboardInvariableDTO implements DashboardInvariableInterface
     /** Период */
     #[Assert\NotBlank]
     private DateTimeImmutable $period;
-
-    /** Тип оплаты (маркетплейс) */
-    #[Assert\NotBlank]
-    private PaymentUid $payment;
 
     public function getName(): string
     {
@@ -81,17 +77,6 @@ final class DashboardInvariableDTO implements DashboardInvariableInterface
     public function setPeriod(DateTimeImmutable $period): self
     {
         $this->period = $period;
-        return $this;
-    }
-
-    public function getPayment(): PaymentUid
-    {
-        return $this->payment;
-    }
-
-    public function setPayment(PaymentUid $payment): self
-    {
-        $this->payment = $payment;
         return $this;
     }
 

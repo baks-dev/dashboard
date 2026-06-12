@@ -23,24 +23,23 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+namespace BaksDev\Dashboard\Entity\Event\User;
 
 use BaksDev\Core\Entity\EntityReadonly;
 use BaksDev\Dashboard\Entity\Event\DashboardEvent;
 use BaksDev\Dashboard\Type\Id\DashboardUid;
-use BaksDev\Payment\Type\Id\PaymentUid;
-use DateTimeImmutable;
+use BaksDev\Users\User\Type\Id\UserUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/* DashboardInvariable */
+/* DashboardUser */
 
 #[ORM\Entity]
-#[ORM\Table(name: 'dashboard_invariable')]
-class DashboardInvariable extends EntityReadonly
+#[ORM\Table(name: 'dashboard_user')]
+class DashboardUser extends EntityReadonly
 {
     /**
      * Идентификатор Main
@@ -56,24 +55,14 @@ class DashboardInvariable extends EntityReadonly
      */
     #[Assert\NotBlank]
     #[Assert\Uuid]
-    #[ORM\OneToOne(targetEntity: DashboardEvent::class, inversedBy: 'invariable')]
+    #[ORM\OneToOne(targetEntity: DashboardEvent::class, inversedBy: 'user')]
     #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
     private DashboardEvent $event;
 
-    /** Название */
+    /** Значение свойства */
     #[Assert\NotBlank]
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
-
-    /** Тип периода */
-    #[Assert\NotBlank]
-    #[ORM\Column(type: Types::STRING)]
-    private string $type; // day | month | year
-
-    /** Период */
-    #[Assert\NotBlank]
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private DateTimeImmutable $period;
+    #[ORM\Column(type: UserUid::TYPE)]
+    private UserUid $value;
 
 
     public function __construct(DashboardEvent $event)
@@ -87,12 +76,17 @@ class DashboardInvariable extends EntityReadonly
         return (string) $this->main;
     }
 
+    public function setEvent(DashboardEvent $event): self
+    {
+        $this->event = $event;
+        return $this;
+    }
 
     public function getDto($dto): mixed
     {
         $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
 
-        if($dto instanceof DashboardInvariableInterface)
+        if($dto instanceof DashboardUserInterface)
         {
             return parent::getDto($dto);
         }
@@ -100,15 +94,24 @@ class DashboardInvariable extends EntityReadonly
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
-
     public function setEntity($dto): mixed
     {
-        if($dto instanceof DashboardInvariableInterface || $dto instanceof self)
+        if($dto instanceof DashboardUserInterface || $dto instanceof self)
         {
+            if(false === ($dto->getValue() instanceof UserUid))
+            {
+                return false;
+            }
+
             return parent::setEntity($dto);
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function getValue(): UserUid
+    {
+        return $this->value;
     }
 
 }

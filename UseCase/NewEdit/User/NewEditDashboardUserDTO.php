@@ -21,17 +21,28 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+declare(strict_types=1);
 
-use BaksDev\Payment\Type\Id\PaymentUid;
-use DateTimeImmutable;
+namespace BaksDev\Dashboard\UseCase\NewEdit\User;
 
-interface DashboardInvariableInterface
+use BaksDev\Dashboard\Entity\Event\User\DashboardUserInterface;
+use BaksDev\Users\User\Type\Id\UserUid;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/** @see DashboardUser */
+final class NewEditDashboardUserDTO implements DashboardUserInterface
 {
-    public function getName(): string;
+    /** Значение свойства */
+    private ?UserUid $value = null;
 
-    public function getType(): string;
+    public function getValue(): ?UserUid
+    {
+        return $this->value;
+    }
 
-    public function getPeriod(): DateTimeImmutable;
-
+    public function setValue(?UserUid $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
 }

@@ -27,7 +27,9 @@ namespace BaksDev\Dashboard\UseCase\NewEdit;
 
 use BaksDev\Dashboard\Entity\Event\DashboardEventInterface;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
-use BaksDev\Dashboard\UseCase\NewEdit\Invariable\DashboardInvariableDTO;
+use BaksDev\Dashboard\UseCase\NewEdit\Invariable\NewEditDashboardInvariableDTO;
+use BaksDev\Dashboard\UseCase\NewEdit\Payment\NewEditDashboardPaymentDTO;
+use BaksDev\Dashboard\UseCase\NewEdit\User\NewEditDashboardUserDTO;
 use BaksDev\Reference\Money\Type\Money;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -42,7 +44,16 @@ final class NewEditDashboardDTO implements DashboardEventInterface
 
     /** DashboardInvariable */
     #[Assert\Valid]
-    private DashboardInvariableDTO $invariable;
+    private NewEditDashboardInvariableDTO $invariable;
+
+
+    /** DashboardPayment */
+    private ?NewEditDashboardPaymentDTO $payment;
+
+
+    /** DashboardUser */
+    #[Assert\Valid]
+    private NewEditDashboardUserDTO $user;
 
     /** Стоимость */
     #[Assert\NotBlank]
@@ -50,7 +61,9 @@ final class NewEditDashboardDTO implements DashboardEventInterface
 
     public function __construct()
     {
-        $this->invariable = new DashboardInvariableDTO();
+        $this->invariable = new NewEditDashboardInvariableDTO();
+        $this->payment = new NewEditDashboardPaymentDTO();
+        $this->user = new NewEditDashboardUserDTO();
     }
 
     /**
@@ -61,7 +74,7 @@ final class NewEditDashboardDTO implements DashboardEventInterface
         return $this->id;
     }
 
-    public function getInvariable(): ?DashboardInvariableDTO
+    public function getInvariable(): ?NewEditDashboardInvariableDTO
     {
         return $this->invariable;
     }
@@ -77,4 +90,13 @@ final class NewEditDashboardDTO implements DashboardEventInterface
         return $this;
     }
 
+    public function getPayment(): NewEditDashboardPaymentDTO
+    {
+        return $this->payment;
+    }
+
+    public function getUser(): NewEditDashboardUserDTO
+    {
+        return $this->user;
+    }
 }

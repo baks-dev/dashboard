@@ -21,17 +21,17 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+namespace BaksDev\Dashboard\Entity\Event\Payment;
 
 use BaksDev\Payment\Type\Id\PaymentUid;
-use DateTimeImmutable;
 
-interface DashboardInvariableInterface
+interface DashboardPaymentInterface
 {
-    public function getName(): string;
-
-    public function getType(): string;
-
-    public function getPeriod(): DateTimeImmutable;
+    /**
+     * Значение свойства
+     *
+     * @see DashboardPayment
+     */
+    public function getValue(): ?PaymentUid;
 
 }

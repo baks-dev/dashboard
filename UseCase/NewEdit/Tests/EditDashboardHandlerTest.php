@@ -34,6 +34,7 @@ use BaksDev\Dashboard\UseCase\NewEdit\NewEditDashboardDTO;
 use BaksDev\Dashboard\UseCase\NewEdit\NewEditDashboardHandler;
 use BaksDev\Payment\Type\Id\PaymentUid;
 use BaksDev\Reference\Money\Type\Money;
+use BaksDev\Users\User\Type\Id\UserUid;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +60,11 @@ class EditDashboardHandlerTest extends KernelTestCase
 
         /** @see DashboardDTO */
         $NewEditDashboardDTO = new NewEditDashboardDTO();
+
+        //dd($DashboardEvent); /* TODO: удалить !!! */
+
         $DashboardEvent->getDto($NewEditDashboardDTO);
+
 
         self::assertTrue($NewEditDashboardDTO->getTotal()->equals(-123.36));
 
@@ -71,8 +76,13 @@ class EditDashboardHandlerTest extends KernelTestCase
         $tetsPeriod = new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day'));
         self::assertEquals($tetsPeriod->format('d.m.Y'), $DashboardInvariableDTO->getPeriod()->format('d.m.Y'));
 
-        self::assertTrue($DashboardInvariableDTO->getPayment()->equals(PaymentUid::TEST));
 
+        $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();
+        self::assertTrue($DashboardPaymentDTO->getValue()->equals(PaymentUid::TEST));
+
+
+        $DashboardUserDTO = $NewEditDashboardDTO->getUser();
+        self::assertTrue($DashboardUserDTO->getValue()->equals(UserUid::TEST));
 
         /** Обновляем */
 
@@ -82,8 +92,12 @@ class EditDashboardHandlerTest extends KernelTestCase
         $DashboardInvariableDTO
             ->setName('Новое название')
             ->setType('month') // day | month | year
-            ->setPeriod(new DateTimeImmutable('now'))
-            ->setPayment(clone new PaymentUid(PaymentUid::TEST));
+            ->setPeriod(new DateTimeImmutable('now'));
+
+        $DashboardPaymentDTO->setValue(clone new PaymentUid(PaymentUid::TEST));
+
+        $DashboardUserDTO->setValue(clone new UserUid(UserUid::TEST));
+
 
         /** @var NewEditDashboardHandler $NewEditDashboardHandler */
         $NewEditDashboardHandler = self::getContainer()->get(NewEditDashboardHandler::class);

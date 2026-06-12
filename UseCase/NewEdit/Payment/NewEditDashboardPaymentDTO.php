@@ -21,17 +21,28 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Dashboard\Entity\Event\Invariable;
+declare(strict_types=1);
 
+namespace BaksDev\Dashboard\UseCase\NewEdit\Payment;
+
+use BaksDev\Dashboard\Entity\Event\Payment\DashboardPaymentInterface;
 use BaksDev\Payment\Type\Id\PaymentUid;
-use DateTimeImmutable;
+use Symfony\Component\Validator\Constraints as Assert;
 
-interface DashboardInvariableInterface
+/** @see DashboardPayment */
+final class NewEditDashboardPaymentDTO implements DashboardPaymentInterface
 {
-    public function getName(): string;
+    /** Тип оплаты (маркетплейс) */
+    private ?PaymentUid $value = null;
 
-    public function getType(): string;
+    public function getValue(): ?PaymentUid
+    {
+        return $this->value;
+    }
 
-    public function getPeriod(): DateTimeImmutable;
-
+    public function setValue(?PaymentUid $value): self
+    {
+        $this->value = $value;
+        return $this;
+    }
 }

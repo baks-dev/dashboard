@@ -26,17 +26,14 @@ declare(strict_types=1);
 namespace BaksDev\Dashboard\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Core\Entity\EntityState;
-use BaksDev\Core\Type\Locale\Locale;
-use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Dashboard\Entity\Dashboard;
 use BaksDev\Dashboard\Entity\Event\Invariable\DashboardInvariable;
 use BaksDev\Dashboard\Entity\Event\Modify\DashboardModify;
+use BaksDev\Dashboard\Entity\Event\Payment\DashboardPayment;
+use BaksDev\Dashboard\Entity\Event\User\DashboardUser;
 use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use BaksDev\Dashboard\Type\Id\DashboardUid;
 use BaksDev\Reference\Money\Type\Money;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -57,9 +54,7 @@ class DashboardEvent extends EntityEvent
     #[ORM\Column(type: DashboardEventUid::TYPE)]
     private DashboardEventUid $id;
 
-    /**
-     * Идентификатор Dashboard
-     */
+    /** Идентификатор Dashboard */
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Column(type: DashboardUid::TYPE, nullable: false)]
@@ -68,6 +63,14 @@ class DashboardEvent extends EntityEvent
     /** DashboardInvariable */
     #[ORM\OneToOne(targetEntity: DashboardInvariable::class, mappedBy: 'event', cascade: ['all'])]
     private ?DashboardInvariable $invariable = null;
+
+    /** DashboardPayment */
+    #[ORM\OneToOne(targetEntity: DashboardPayment::class, mappedBy: 'event', cascade: ['all'])]
+    private ?DashboardPayment $payment = null;
+
+    /** DashboardUser */
+    #[ORM\OneToOne(targetEntity: DashboardUser::class, mappedBy: 'event', cascade: ['all'])]
+    private ?DashboardUser $user = null;
 
     /** Стоимость */
     #[Assert\NotBlank]
