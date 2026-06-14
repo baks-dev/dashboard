@@ -104,7 +104,7 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
             'WITH',
             '
                 dashboard_user.main = dashboard.id 
-                AND dashboard_payment.value = :usr
+                AND dashboard_user.value = :usr
              ')
             ->setParameter(
                 key: 'usr',
@@ -138,12 +138,12 @@ final class DashboardCurrentEventByPeriodRepository implements DashboardCurrentE
             ->setParameter(
                 key: 'start',
                 value: $this->start,
-                type: Types::DATETIME_IMMUTABLE,
+                type: Types::DATE_IMMUTABLE,
             )
             ->setParameter(
                 key: 'finish',
                 value: $this->finish,
-                type: Types::DATETIME_IMMUTABLE,
+                type: Types::DATE_IMMUTABLE,
             );
 
 
