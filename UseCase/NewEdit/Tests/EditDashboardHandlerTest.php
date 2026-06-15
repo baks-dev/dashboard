@@ -96,7 +96,8 @@ class EditDashboardHandlerTest extends KernelTestCase
             ->setPeriod(
                 new DateTimeImmutable('now'),
                 new DateTimeImmutable('now'),
-            );
+            )
+            ->setPriority(100);
 
         $NewEditDashboardTypeDTO->setValue('month');
         $DashboardPaymentDTO->setValue(clone new PaymentUid(PaymentUid::TEST));

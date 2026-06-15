@@ -47,6 +47,10 @@ final class NewEditDashboardInvariableDTO implements DashboardInvariableInterfac
     #[Assert\NotBlank]
     private DateTimeImmutable $finish;
 
+    /** Приоритет (выше число - выше по списку) */
+    #[Assert\NotBlank]
+    private int $priority = 0;
+
     public function getName(): string
     {
         return $this->name;
@@ -72,6 +76,17 @@ final class NewEditDashboardInvariableDTO implements DashboardInvariableInterfac
     {
         $this->start = $from->setTime(0, 0, 0);
         $this->finish = $to->setTime(0, 0, 0);
+        return $this;
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): self
+    {
+        $this->priority = $priority;
         return $this;
     }
 }

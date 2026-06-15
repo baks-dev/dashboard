@@ -86,7 +86,8 @@ class NewDashboardHandlerTest extends KernelTestCase
             ->setPeriod(
                 new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')),
                 new DateTimeImmutable('now')->sub(DateInterval::createFromDateString('1 day')),
-            );
+            )
+            ->setPriority(100);
 
         $DashboardPaymentDTO = $NewEditDashboardDTO->getPayment();
         $DashboardPaymentDTO->setValue(new PaymentUid(PaymentUid::TEST));
