@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'dashboard_invariable')]
-#[ORM\Index(columns: ['start', 'finish'])]
+#[ORM\Index(columns: ['start', 'finish', 'priority'])]
 class DashboardInvariable extends EntityReadonly
 {
     /**
@@ -65,6 +65,12 @@ class DashboardInvariable extends EntityReadonly
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::STRING)]
     private string $name;
+
+    /** Приоритет (выше число - выше по списку) */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::INTEGER, options: ['default: 0'])]
+    private int $priority = 0;
+
 
     /**
      * Период
