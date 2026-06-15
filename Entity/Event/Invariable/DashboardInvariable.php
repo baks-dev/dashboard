@@ -40,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'dashboard_invariable')]
+#[ORM\Index(columns: ['start', 'finish'])]
 class DashboardInvariable extends EntityReadonly
 {
     /**
