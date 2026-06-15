@@ -148,4 +148,8 @@ class DashboardEvent extends EntityEvent
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
+    public function getTotal(): Money
+    {
+        return $this->total;
+    }
 }

@@ -30,6 +30,7 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Dashboard\Entity\Dashboard;
 use BaksDev\Dashboard\Entity\Event\DashboardEvent;
 use BaksDev\Dashboard\Messenger\Default\DashboardMessage;
+use BaksDev\Dashboard\Type\Event\DashboardEventUid;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(public: true, shared: false)]
@@ -46,6 +47,18 @@ final class NewEditDashboardHandler extends AbstractHandler
         if($this->validatorCollection->isInvalid())
         {
             return $this->validatorCollection->getErrorUniqid();
+        }
+
+        /** Проверяем что значение изменилось */
+        if($command->getEvent() instanceof DashboardEventUid)
+        {
+            /** @var DashboardEvent $event */
+            $event = $this->event;
+
+            if(true === $event->getTotal()->equals($command->getTotal()))
+            {
+                return $this->main;
+            }
         }
 
         $this->flush();
